@@ -112,6 +112,25 @@ button {
 
 #loveBox { margin-top: 20px; animation: pop 0.6s ease; }
 @keyframes pop { 0% { transform: scale(0); } 100% { transform: scale(1); } }
+/* WhatsApp Button Style */
+.whatsapp-btn {
+  display: inline-block;
+  margin-top: 15px;
+  padding: 12px 24px;
+  background-color: #25D366; /* WhatsApp Green */
+  color: white;
+  text-decoration: none;
+  font-size: 1.1rem;
+  font-weight: bold;
+  border-radius: 50px;
+  box-shadow: 0 4px 10px rgba(37, 211, 102, 0.3);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.whatsapp-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 15px rgba(37, 211, 102, 0.4);
+}
 
 
 
