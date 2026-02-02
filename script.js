@@ -122,6 +122,8 @@ document.addEventListener('DOMContentLoaded', () => {
     yesBtn.addEventListener("click", () => {
       startMusic();
       yaySound.play().catch(()=>{});
+      // CHANGE BACKGROUND IMAGE 👇
+      document.body.style.backgroundImage = "url('https://i.pinimg.com/originals/1e/0e/8c/1e0e8c25740445759719111451457145.jpg')";
       
       // Hide buttons and text
       noBtn.style.display = "none";
@@ -181,3 +183,4 @@ document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => heart.remove(), 6000);
   }, 500);
 });
+
