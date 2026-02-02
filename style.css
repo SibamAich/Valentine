@@ -1,17 +1,23 @@
 /* style.css */
-/* style.css */
 body {
   margin: 0;
   height: 100vh;
-  /* Intro Background Image 👇 */
-  background: url('https://i.pinimg.com/736x/8a/2e/7e/8a2e7eb931114b358249021c3228965f.jpg') no-repeat center center fixed;
-  background-size: cover; 
   display: flex;
   justify-content: center;
   align-items: center;
   font-family: 'Comic Neue', cursive;
   overflow: hidden;
-  transition: background 0.5s ease; /* Smooth fade effect */
+  
+  /* FIXED BACKGROUND CODE 👇 */
+  background-color: #ff9a9e; /* Fallback Pink color */
+  /* This is a cute cat image for the "Intro" */
+  background-image: url('https://images.unsplash.com/photo-1518791841217-8f162f1e1131?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80');
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-attachment: fixed;
+  background-size: cover;
+  
+  transition: background-image 0.5s ease; /* Smooth transition */
 }
 
 .card {
@@ -108,5 +114,6 @@ button {
 
 #loveBox { margin-top: 20px; animation: pop 0.6s ease; }
 @keyframes pop { 0% { transform: scale(0); } 100% { transform: scale(1); } }
+
 
 
