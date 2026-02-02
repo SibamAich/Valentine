@@ -85,3 +85,40 @@ button {
     opacity: 0;
   }
 }
+/* Typewriter text */
+#typeText {
+  color: #ff4d6d;
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+/* Floating hearts */
+.heart {
+  position: fixed;
+  bottom: -20px;
+  font-size: 20px;
+  animation: floatUp 6s linear forwards;
+}
+
+@keyframes floatUp {
+  to {
+    transform: translateY(-110vh);
+    opacity: 0;
+  }
+}
+
+/* Secret message */
+.hidden {
+  display: none;
+}
+
+#loveBox {
+  margin-top: 20px;
+  animation: pop 0.6s ease;
+}
+
+@keyframes pop {
+  0% { transform: scale(0); }
+  100% { transform: scale(1); }
+}
+
