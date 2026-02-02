@@ -20,7 +20,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // --- VARIABLES ---
   let musicStarted = false;
-  const questions = [
+
+  // Questions for the Intro "No" Button
+  const introQuestions = [
+    "Are you sure? 🤨",
+    "Really? It's a dare! 😤",
+    "Don't be scared... 🥺",
+    "Just click YES! 💖",
+    "You can't say no forever! 😈"
+  ];
+  let introIndex = 0;
+
+  // Questions for the Main "No" Button
+  const mainQuestions = [
     "Are you sure? 🤨",
     "Really sure?? 😳",
     "Think again 🥺",
@@ -28,7 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
     "My heart is breaking 💔",
     "Just say YES 😭"
   ];
-  let qIndex = 0;
+  let mainIndex = 0;
 
   // --- MUSIC LOGIC ---
   function startMusic() {
@@ -54,23 +66,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // --- INTRO SCREEN EVENTS ---
   
-  // Intro "No" Button -> Annoying Alerts
+  // 1. Intro "No" Button (One Popup Per Click)
   if (introNoBtn) {
     introNoBtn.addEventListener("click", () => {
       startMusic();
-      alert("Are you sure? 🤨");
-      alert("Really? It's a dare! 😤");
-      alert("Don't be scared... 🥺");
-      alert("Just click YES! 💖");
+      
+      // Show current message
+      alert(introQuestions[introIndex % introQuestions.length]);
+      
+      // Move to the next message for next time
+      introIndex++;
     });
   }
 
-// Intro "Yes" Button -> Transition to Main
+  // 2. Intro "Yes" Button (Switch to Main Screen)
   if (introYesBtn) {
     introYesBtn.addEventListener("click", () => {
       startMusic();
       
-      // UPDATED FILE NAME 👇
+      // CHANGE BACKGROUND IMAGE 👇
+      // Make sure 'main.webp' matches your file name exactly!
       document.body.style.backgroundImage = "url('main.webp')";
       
       // Hide Intro, Show Main
@@ -87,16 +102,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // --- MAIN SCREEN EVENTS ---
 
-  // Runaway No Button
+  // Runaway "No" Button Logic
   function moveNoBtn() {
-    startMusic(); // Ensure music plays if they try to touch No
+    startMusic(); 
     hoverSound.currentTime = 0;
     hoverSound.play().catch(()=>{});
 
-    // Make the button "Fixed" so it can move anywhere on screen
     noBtn.style.position = "fixed"; 
     
-    // Calculate random position within window bounds
+    // Calculate random position
     const x = Math.random() * (window.innerWidth - noBtn.offsetWidth - 20);
     const y = Math.random() * (window.innerHeight - noBtn.offsetHeight - 20);
     
@@ -106,28 +120,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (noBtn) {
     noBtn.addEventListener("mouseover", moveNoBtn);
-    noBtn.addEventListener("touchstart", moveNoBtn); // For mobile
+    noBtn.addEventListener("touchstart", moveNoBtn); // Mobile fix
     
     noBtn.addEventListener("click", () => {
       noSound.currentTime = 0;
       noSound.play().catch(()=>{});
       
-      // Update text inside the message div
+      // Change the text below the buttons
       if (message) {
-        message.textContent = questions[qIndex % questions.length];
-        qIndex++;
+        message.textContent = mainQuestions[mainIndex % mainQuestions.length];
+        mainIndex++;
       }
       moveNoBtn();
     });
   }
 
-  // Final Yes Button
+  // Final "Yes" Button Logic
   if (yesBtn) {
     yesBtn.addEventListener("click", () => {
       startMusic();
       yaySound.play().catch(()=>{});
-      // CHANGE BACKGROUND IMAGE 👇
-      document.body.style.backgroundImage = "url('https://i.pinimg.com/originals/1e/0e/8c/1e0e8c25740445759719111451457145.jpg')";
       
       // Hide buttons and text
       noBtn.style.display = "none";
@@ -135,7 +147,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (typeTextElement) typeTextElement.style.display = "none";
       if (message) message.style.display = "none";
       
-      // Hide the "Tani..." header if it exists
+      // Hide the "Tani..." header
       const mainHeader = mainScreen.querySelector("h1");
       if (mainHeader) mainHeader.style.display = "none";
 
@@ -187,6 +199,3 @@ document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => heart.remove(), 6000);
   }, 500);
 });
-
-
-
