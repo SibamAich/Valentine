@@ -116,6 +116,14 @@ function typeWriter() {
   }
 }
 typeWriter();
+let noSize = 1;
+
+noBtn.addEventListener("click", () => {
+  noSize -= 0.1;
+  noBtn.style.transform = `scale(${noSize})`;
+});
+
+
 
 
 
