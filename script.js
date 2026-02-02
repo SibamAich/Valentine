@@ -65,16 +65,21 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Intro "Yes" Button -> Transition to Main
+// Intro "Yes" Button -> Transition to Main
   if (introYesBtn) {
     introYesBtn.addEventListener("click", () => {
       startMusic();
+      
+      // 1. CHANGE TO ROMANTIC BACKGROUND 👇
+      // (Using a reliable pink clouds image from Unsplash)
+      document.body.style.backgroundImage = "url('https://images.unsplash.com/photo-1490750967868-58cb75063ed4?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80')";
+      
       // Hide Intro, Show Main
       introScreen.classList.add("hidden");
-      introScreen.style.display = "none"; // Force hide
+      introScreen.style.display = "none"; 
       
       mainScreen.classList.remove("hidden");
-      mainScreen.style.display = "block"; // Force show
+      mainScreen.style.display = "block"; 
       
       // Start Typewriter
       typeWriter();
@@ -183,4 +188,5 @@ document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => heart.remove(), 6000);
   }, 500);
 });
+
 
