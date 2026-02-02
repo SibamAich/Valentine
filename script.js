@@ -105,5 +105,18 @@ setInterval(() => {
 yesBtn.addEventListener("click", () => {
   document.getElementById("loveBox").style.display = "block";
 });
+const text = "Will you be my Valentine? ❤️";
+let i = 0;
+
+function typeWriter() {
+  if (i < text.length) {
+    document.getElementById("typeText").innerHTML += text.charAt(i);
+    i++;
+    setTimeout(typeWriter, 80);
+  }
+}
+typeWriter();
+
+
 
 
