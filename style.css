@@ -18,8 +18,11 @@ body {
   box-shadow: 0 20px 40px rgba(0,0,0,0.2);
   width: 90%;
   max-width: 400px;
-  /* Add smooth transition for switching screens */
   animation: fadeIn 0.5s ease;
+  
+  /* ADD THESE LINES 👇 */
+  position: relative; 
+  z-index: 1000; /* Forces card above everything else */
 }
 
 @keyframes fadeIn {
@@ -101,3 +104,4 @@ button {
 
 #loveBox { margin-top: 20px; animation: pop 0.6s ease; }
 @keyframes pop { 0% { transform: scale(0); } 100% { transform: scale(1); } }
+
