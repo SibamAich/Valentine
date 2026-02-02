@@ -8,16 +8,14 @@ body {
   font-family: 'Comic Neue', cursive;
   overflow: hidden;
   
-  /* FIXED BACKGROUND CODE 👇 */
-  background-color: #ff9a9e; /* Fallback Pink color */
-  /* This is a cute cat image for the "Intro" */
-  background-image: url('https://images.unsplash.com/photo-1518791841217-8f162f1e1131?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80');
+  /* UPDATED FILE NAME 👇 */
+  background-image: url('intro.png');
+  
   background-repeat: no-repeat;
   background-position: center center;
   background-attachment: fixed;
   background-size: cover;
-  
-  transition: background-image 0.5s ease; /* Smooth transition */
+  transition: background-image 0.5s ease;
 }
 
 .card {
@@ -114,6 +112,7 @@ button {
 
 #loveBox { margin-top: 20px; animation: pop 0.6s ease; }
 @keyframes pop { 0% { transform: scale(0); } 100% { transform: scale(1); } }
+
 
 
 
