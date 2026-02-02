@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Be My Valentine 💘</title>
+  <title>Valentine 💘</title>
 
-  <!-- Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Comic+Neue&family=Pacifico&display=swap" rel="stylesheet">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Comic+Neue&display=swap" rel="stylesheet">
 
   <!-- CSS -->
   <link rel="stylesheet" href="style.css">
@@ -15,26 +15,33 @@
   <div class="card">
     <h1>Tani, will you be my Valentine? 💘</h1>
 
+    <!-- Typewriter text -->
+    <p id="typeText"></p>
+
     <div class="buttons">
       <button id="yesBtn">Yes 💖</button>
       <button id="noBtn">No 🙈</button>
     </div>
 
     <div class="message" id="message"></div>
+
+    <!-- Secret message -->
+    <div id="loveBox" class="hidden">
+      <h2>I knew you’d say YES 💖</h2>
+      <p>You make my world brighter every day 🌍✨</p>
+    </div>
   </div>
 
-  <!-- AUDIO -->
+  <!-- Audio -->
   <audio id="hoverSound" src="https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3"></audio>
   <audio id="noSound" src="https://assets.mixkit.co/active_storage/sfx/110/110-preview.mp3"></audio>
   <audio id="yaySound" src="https://assets.mixkit.co/active_storage/sfx/2013/2013-preview.mp3"></audio>
 
-  <audio id="bgMusic" loop>
-    <source src="music.mp3" type="audio/mpeg">
-  </audio>
+  <!-- Background Music (LOCAL FILE) -->
+  <audio id="bgMusic" src="music.mp3" loop></audio>
 
   <!-- JS -->
   <script src="script.js"></script>
 </body>
-  <audio id="bgMusic" src="music.mp3" loop></audio>
 </html>
 
