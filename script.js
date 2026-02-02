@@ -77,4 +77,33 @@ yesBtn.addEventListener("click", () => {
   yesBtn.disabled = true;
   launchConfetti();
 });
+// TYPEWRITER
+const text = "Will you be my Valentine? ❤️";
+let i = 0;
+
+function typeWriter() {
+  if (i < text.length) {
+    document.getElementById("typeText").innerHTML += text.charAt(i);
+    i++;
+    setTimeout(typeWriter, 80);
+  }
+}
+typeWriter();
+
+// FLOATING HEARTS
+setInterval(() => {
+  const heart = document.createElement("div");
+  heart.className = "heart";
+  heart.innerText = "❤️";
+  heart.style.left = Math.random() * 100 + "vw";
+  heart.style.fontSize = Math.random() * 20 + 15 + "px";
+  document.body.appendChild(heart);
+  setTimeout(() => heart.remove(), 6000);
+}, 400);
+
+// SHOW LOVE MESSAGE ON YES
+yesBtn.addEventListener("click", () => {
+  document.getElementById("loveBox").style.display = "block";
+});
+
 
