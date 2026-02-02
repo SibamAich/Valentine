@@ -77,3 +77,7 @@ yesBtn.addEventListener("click", () => {
   yesBtn.disabled = true;
   launchConfetti();
 });
+document.body.addEventListener("click", () => {
+  bgMusic.play();
+}, { once: true });
+
