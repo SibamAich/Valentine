@@ -1,17 +1,16 @@
 document.addEventListener('DOMContentLoaded', () => {
-  // --- SCREENS ---
+  // --- ELEMENTS ---
   const introScreen = document.getElementById("introScreen");
   const mainScreen = document.getElementById("mainScreen");
-
-  // --- INTRO BUTTONS ---
+  
   const introYesBtn = document.getElementById("introYesBtn");
   const introNoBtn = document.getElementById("introNoBtn");
-
-  // --- MAIN BUTTONS ---
-  const noBtn = document.getElementById("noBtn");
+  
   const yesBtn = document.getElementById("yesBtn");
+  const noBtn = document.getElementById("noBtn");
   const message = document.getElementById("message");
   const loveBox = document.getElementById("loveBox");
+  const typeTextElement = document.getElementById("typeText");
 
   // --- AUDIO ---
   const hoverSound = document.getElementById("hoverSound");
@@ -19,13 +18,24 @@ document.addEventListener('DOMContentLoaded', () => {
   const yaySound = document.getElementById("yaySound");
   const bgMusic = document.getElementById("bgMusic");
 
+  // --- VARIABLES ---
   let musicStarted = false;
+  const questions = [
+    "Are you sure? 🤨",
+    "Really sure?? 😳",
+    "Think again 🥺",
+    "Last chance 😤",
+    "My heart is breaking 💔",
+    "Just say YES 😭"
+  ];
+  let qIndex = 0;
 
-  // --- MUSIC FADE IN ---
+  // --- MUSIC LOGIC ---
   function startMusic() {
     if (!musicStarted) {
       bgMusic.volume = 0;
       bgMusic.play().then(() => {
+        // Fade in
         let vol = 0;
         const fadeIn = setInterval(() => {
           if (vol < 0.4) {
@@ -35,12 +45,16 @@ document.addEventListener('DOMContentLoaded', () => {
             clearInterval(fadeIn);
           }
         }, 200);
-      }).catch(e => console.log("Waiting for interaction..."));
+      }).catch(() => {
+        console.log("Music blocked until interaction");
+      });
       musicStarted = true;
     }
   }
 
-  // --- INTRO SCREEN LOGIC ---
+  // --- INTRO SCREEN EVENTS ---
+  
+  // Intro "No" Button -> Annoying Alerts
   if (introNoBtn) {
     introNoBtn.addEventListener("click", () => {
       startMusic();
@@ -51,73 +65,100 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // Intro "Yes" Button -> Transition to Main
   if (introYesBtn) {
     introYesBtn.addEventListener("click", () => {
       startMusic();
+      // Hide Intro, Show Main
       introScreen.classList.add("hidden");
+      introScreen.style.display = "none"; // Force hide
+      
       mainScreen.classList.remove("hidden");
+      mainScreen.style.display = "block"; // Force show
+      
+      // Start Typewriter
       typeWriter();
     });
   }
 
-  // --- MAIN SCREEN LOGIC ---
-  function moveNo() {
-    if (!musicStarted) startMusic();
+  // --- MAIN SCREEN EVENTS ---
+
+  // Runaway No Button
+  function moveNoBtn() {
+    startMusic(); // Ensure music plays if they try to touch No
     hoverSound.currentTime = 0;
-    hoverSound.play().catch(() => {});
-    
-    // Move button
-    const x = Math.random() * (window.innerWidth - noBtn.offsetWidth - 50);
-    const y = Math.random() * (window.innerHeight - noBtn.offsetHeight - 50);
-    
-    // Ensure button stays on screen (Fixed positioning logic)
+    hoverSound.play().catch(()=>{});
+
+    // Make the button "Fixed" so it can move anywhere on screen
     noBtn.style.position = "fixed"; 
-    noBtn.style.left = Math.max(10, Math.min(x, window.innerWidth - 100)) + "px";
-    noBtn.style.top = Math.max(10, Math.min(y, window.innerHeight - 100)) + "px";
+    
+    // Calculate random position within window bounds
+    const x = Math.random() * (window.innerWidth - noBtn.offsetWidth - 20);
+    const y = Math.random() * (window.innerHeight - noBtn.offsetHeight - 20);
+    
+    noBtn.style.left = `${Math.max(10, x)}px`;
+    noBtn.style.top = `${Math.max(10, y)}px`;
   }
 
   if (noBtn) {
-    noBtn.addEventListener("mouseover", moveNo);
+    noBtn.addEventListener("mouseover", moveNoBtn);
+    noBtn.addEventListener("touchstart", moveNoBtn); // For mobile
+    
     noBtn.addEventListener("click", () => {
       noSound.currentTime = 0;
-      noSound.play().catch(() => {});
-      moveNo();
+      noSound.play().catch(()=>{});
+      
+      // Update text inside the message div
+      if (message) {
+        message.textContent = questions[qIndex % questions.length];
+        qIndex++;
+      }
+      moveNoBtn();
     });
   }
 
+  // Final Yes Button
   if (yesBtn) {
     yesBtn.addEventListener("click", () => {
       startMusic();
-      yaySound.play().catch(() => {});
+      yaySound.play().catch(()=>{});
       
+      // Hide buttons and text
       noBtn.style.display = "none";
-      yesBtn.style.display = "none"; 
-      document.getElementById("typeText").style.display = "none";
-      const h1 = document.querySelector("#mainScreen h1");
-      if(h1) h1.style.display = "none";
-
-      loveBox.classList.remove("hidden");
-      loveBox.style.display = "block";
+      yesBtn.style.display = "none";
+      if (typeTextElement) typeTextElement.style.display = "none";
+      if (message) message.style.display = "none";
       
+      // Hide the "Tani..." header if it exists
+      const mainHeader = mainScreen.querySelector("h1");
+      if (mainHeader) mainHeader.style.display = "none";
+
+      // Show the Love Box
+      if (loveBox) {
+        loveBox.classList.remove("hidden");
+        loveBox.style.display = "block";
+      }
+
       launchConfetti();
     });
   }
 
-  // --- TYPEWRITER ---
+  // --- UTILITIES ---
+
+  // Typewriter
   const text = "Will you be my Valentine? ❤️";
   let i = 0;
   function typeWriter() {
-    const typeTarget = document.getElementById("typeText");
-    if (i < text.length && typeTarget) {
-      typeTarget.innerHTML += text.charAt(i);
+    if (i < text.length && typeTextElement) {
+      typeTextElement.innerHTML += text.charAt(i);
       i++;
       setTimeout(typeWriter, 80);
     }
   }
 
-  // --- CONFETTI ---
+  // Confetti
   function launchConfetti() {
-    for (let i = 0; i < 50; i++) {
+    for (let j = 0; j < 50; j++) {
       const c = document.createElement("div");
       c.className = "confetti";
       c.textContent = ["❤️","🎉","✨","💖"][Math.floor(Math.random()*4)];
@@ -129,7 +170,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // --- FLOATING HEARTS ---
+  // Background Hearts
   setInterval(() => {
     const heart = document.createElement("div");
     heart.className = "heart";
@@ -139,5 +180,4 @@ document.addEventListener('DOMContentLoaded', () => {
     document.body.appendChild(heart);
     setTimeout(() => heart.remove(), 6000);
   }, 500);
-
 });
