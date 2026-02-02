@@ -1,130 +1,147 @@
+/* script.js */
+// --- SCREENS ---
+const introScreen = document.getElementById("introScreen");
+const mainScreen = document.getElementById("mainScreen");
+
+// --- INTRO BUTTONS ---
+const introYesBtn = document.getElementById("introYesBtn");
+const introNoBtn = document.getElementById("introNoBtn");
+
+// --- MAIN BUTTONS ---
 const noBtn = document.getElementById("noBtn");
 const yesBtn = document.getElementById("yesBtn");
 const message = document.getElementById("message");
-const card = document.querySelector(".card");
+const loveBox = document.getElementById("loveBox");
 
+// --- AUDIO ---
 const hoverSound = document.getElementById("hoverSound");
 const noSound = document.getElementById("noSound");
 const yaySound = document.getElementById("yaySound");
 const bgMusic = document.getElementById("bgMusic");
 
-const questions = [
-  "Are you sure? 🤨",
-  "Really sure?? 😳",
-  "Think again 🥺",
-  "Last chance 😤",
-  "My heart is breaking 💔",
-  "Just say YES 😭"
-];
-
-let q = 0;
 let musicStarted = false;
 
+// --- MUSIC FADE IN FUNCTION ---
 function startMusic() {
   if (!musicStarted) {
-    bgMusic.volume = 0.4;
-    bgMusic.play().catch(() => {});
+    bgMusic.volume = 0;
+    bgMusic.play().then(() => {
+      let vol = 0;
+      const fadeIn = setInterval(() => {
+        if (vol < 0.4) {
+          vol += 0.02;
+          bgMusic.volume = vol;
+        } else {
+          clearInterval(fadeIn);
+        }
+      }, 200);
+    }).catch(e => console.log("Waiting for interaction..."));
     musicStarted = true;
   }
 }
 
-document.body.addEventListener("click", startMusic, { once: true });
+// --- INTRO SCREEN LOGIC ---
 
-function vibrate(p) {
-  if (navigator.vibrate) navigator.vibrate(p);
-}
+// 1. INTRO "NO" (The annoying dialogs)
+introNoBtn.addEventListener("click", () => {
+  startMusic(); // Start music immediately!
+  
+  // Dialog Loop
+  alert("Are you sure? 🤨");
+  alert("Really? It's a dare! 😤");
+  alert("Don't be scared... 🥺");
+  alert("Just click YES! 💖");
+});
 
+// 2. INTRO "YES" (Switch to Main Screen)
+introYesBtn.addEventListener("click", () => {
+  startMusic(); // Start music
+  
+  // Switch Screens
+  introScreen.classList.add("hidden");
+  mainScreen.classList.remove("hidden");
+  
+  // Start the Typewriter ONLY now
+  typeWriter();
+});
+
+
+// --- MAIN SCREEN LOGIC ---
+
+// Runaway "No" Button
 function moveNo() {
-  startMusic();
   hoverSound.currentTime = 0;
   hoverSound.play();
-  vibrate(40);
+  
+  // Shake animation
+  mainScreen.classList.add("shake");
+  setTimeout(() => mainScreen.classList.remove("shake"), 400);
 
-  card.classList.add("shake");
-  setTimeout(() => card.classList.remove("shake"), 400);
-
-  noBtn.style.left = Math.random() * 150 + "px";
-  noBtn.style.top = Math.random() * 60 + "px";
+  // Move button
+  noBtn.style.left = Math.random() * 100 + "px"; // adjusted for simpler layout
+  noBtn.style.top = Math.random() * 50 + "px";
 }
 
 noBtn.addEventListener("mouseover", moveNo);
-noBtn.addEventListener("touchstart", moveNo);
-
 noBtn.addEventListener("click", () => {
+  noSound.currentTime = 0;
   noSound.play();
-  message.textContent = questions[q++ % questions.length];
   moveNo();
 });
 
+// Final "Yes" Button
+yesBtn.addEventListener("click", () => {
+  yaySound.play();
+  
+  // Hide UI
+  noBtn.style.display = "none";
+  yesBtn.style.display = "none"; 
+  document.getElementById("typeText").style.display = "none";
+  document.querySelector("#mainScreen h1").style.display = "none";
+
+  // Show Love Box
+  loveBox.classList.remove("hidden");
+  loveBox.style.display = "block";
+  
+  launchConfetti();
+});
+
+
+// --- ANIMATIONS ---
+
+// Confetti
 function launchConfetti() {
-  for (let i = 0; i < 40; i++) {
+  for (let i = 0; i < 50; i++) {
     const c = document.createElement("div");
     c.className = "confetti";
     c.textContent = ["❤️","🎉","✨","💖"][Math.floor(Math.random()*4)];
     c.style.left = Math.random() * 100 + "vw";
-    c.style.animationDuration = 2 + Math.random() * 2 + "s";
+    c.style.animationDuration = 2 + Math.random() * 3 + "s";
+    c.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
     document.body.appendChild(c);
-    setTimeout(() => c.remove(), 4000);
+    setTimeout(() => c.remove(), 5000);
   }
 }
 
-yesBtn.addEventListener("click", () => {
-  startMusic();
-  yaySound.play();
-  vibrate([200,100,200]);
-  message.textContent = "Thank you ❤️";
-  noBtn.remove();
-  yesBtn.disabled = true;
-  launchConfetti();
-});
-// TYPEWRITER
+// Typewriter (Starts when called)
 const text = "Will you be my Valentine? ❤️";
 let i = 0;
-
 function typeWriter() {
+  const typeTarget = document.getElementById("typeText");
   if (i < text.length) {
-    document.getElementById("typeText").innerHTML += text.charAt(i);
+    typeTarget.innerHTML += text.charAt(i);
     i++;
     setTimeout(typeWriter, 80);
   }
 }
-typeWriter();
 
-// FLOATING HEARTS
+// Floating Hearts
 setInterval(() => {
   const heart = document.createElement("div");
   heart.className = "heart";
   heart.innerText = "❤️";
   heart.style.left = Math.random() * 100 + "vw";
-  heart.style.fontSize = Math.random() * 20 + 15 + "px";
+  heart.style.fontSize = Math.random() * 20 + 10 + "px"; 
   document.body.appendChild(heart);
   setTimeout(() => heart.remove(), 6000);
-}, 400);
-
-// SHOW LOVE MESSAGE ON YES
-yesBtn.addEventListener("click", () => {
-  document.getElementById("loveBox").style.display = "block";
-});
-const text = "Will you be my Valentine? ❤️";
-let i = 0;
-
-function typeWriter() {
-  if (i < text.length) {
-    document.getElementById("typeText").innerHTML += text.charAt(i);
-    i++;
-    setTimeout(typeWriter, 80);
-  }
-}
-typeWriter();
-let noSize = 1;
-
-noBtn.addEventListener("click", () => {
-  noSize -= 0.1;
-  noBtn.style.transform = `scale(${noSize})`;
-});
-
-
-
-
-
-
+}, 500);
